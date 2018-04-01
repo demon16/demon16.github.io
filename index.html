@@ -1,0 +1,89 @@
+<link rel="Shortcut Icon" href="./favicon.ico">
+<link rel="stylesheet" href="./scrolldown.css">
+<script src="./html5shiv-printshiv.min.js"></script>
+<script src="./markdown.min.js"></script>
+<script src="./jquery.min.js"></script>
+<template class="markdown" id="in">
+  ##### sb 夕阳影下
+  ### linux
+    - * **install chrome** *
+
+      `wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -`
+
+      `sudo sh -c 'echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list'`
+
+      `sudo apt update`
+
+      `sudo apt-get install google-chrome-stable`
+
+    - * **chrome flash-plugin** *
+
+      `sudo apt install adobe-flashplugin` or `sudo apt-get install pepperflashplugin-nonfree`
+
+    - * **sshserver with client key update** *
+
+      `eval 'ssh-agent -s'`
+
+      `ssh-add`
+
+    - [change username and hostname](`https://www.cnblogs.com/zeusmyth/p/6231350.html)
+
+    - * **instal node.js 8.x** *
+
+      `curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -`
+      
+      `sudo apt-get install -y nodejs`
+
+  ---
+  ### python
+    - [PyYAML Documentation](http://pyyaml.org/wiki/PyYAMLDocumentation)
+    - [Flask](http://flask.pocoo.org/docs/0.12/api/)
+    - [Flask-RESTful](http://flask-restful.readthedocs.io/en/0.3.6/api.html)
+    - [Flask-SQLAlchemy](http://flask-sqlalchemy.pocoo.org/2.3/api/)
+    - [MarshMallow](http://marshmallow.readthedocs.io/en/latest/quickstart.html)
+
+  ---
+  ### database
+    - [Redis](https://www.fullstackpython.com/blog/install-redis-use-python-3-ubuntu-1604.html)
+    - [Peewee](http://docs.peewee-orm.com/en/latest/peewee/example.html)
+  ---
+
+  ### other
+    - [Unicode Characters](http://graphemica.com/unicode/characters)
+
+  ### [APIcode](https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html)
+      200 OK                    [GET]             服务器成功返回用户请求的数据
+      201 CREATED               [POST/PUT/PATCH]  用户新建或修改数据成功
+      202 Accepted              [*]               表示一个请求已经进入后台排队
+      204 NO CONTENT            [DELETE]          用户删除数据成功
+      400 INVALID REQUEST       [POST/PUT/PATCH]  用户发出的请求错误
+      401 Unauthorized          [*]               用户无权限
+      403 Forbidden             [*]               禁止访问（有权限）
+      404 NOT FOUND             [*]               服务器地址不存在
+      406 Not Acceptable        [GET]             用户请求的格式不可得
+      410 Gone                  [GET]             服务器资源不存在
+      422 Unprocesable entity   [POST/PUT/PATCH]  创建对象验证错误
+      500 INTERNAL SERVER ERROR [*]               服务器内部错误
+      
+  # F
+  # R
+  # E
+  # E
+  # D
+  # O
+  # O
+  # M
+</template>
+<span id="out"></span>
+
+<script type="text/javascript">
+    var mdParser = markdown;
+    var mdP = mdParser;
+    var mdTemplate = $('template.markdown#in');
+    var mdT = mdTemplate;
+    var md = mdT.html().replace(/^  /gm, '').replace(/\n.*(?!.*\n)/g, '');
+    var mdOutput = $('#out');
+    var mdO = mdOutput;
+    var mdHTML = mdP.toHTML(md).replace(/^&gt;$/, '>');
+    mdO.html(mdHTML);
+</script>

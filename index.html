@@ -46,6 +46,9 @@
       
       `sudo cp -v rar unrar /usr/local/bin/`
   
+    - * **kill aim process** *
+      `ps -ef |grep "feedback.py" |grep -v grep |awk '{print $2}'|xargs kill -9 > /dev/null 2>&1`
+  
   ---
   ### python
     - [PyYAML Documentation](http://pyyaml.org/wiki/PyYAMLDocumentation)

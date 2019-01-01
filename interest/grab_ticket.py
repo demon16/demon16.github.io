@@ -5,6 +5,15 @@ from io import BytesIO
 import base64
 import threading
 import time
+import urllib.parse
+import re
+import lxml.etree
+
+
+sd = {
+    'SZQ': '深圳',
+    'WHN': '武汉',
+}
 
 
 class Grabber:
@@ -31,16 +40,17 @@ class Grabber:
 
         def crawl_ticket_info():
             url = (f'https://kyfw.12306.cn/otn/leftTicket/queryZ?'
-                f'leftTicketDTO.train_date={self.d}'
-                f'&leftTicketDTO.from_station={self.f}'
-                f'&leftTicketDTO.to_station={self.t}&purpose_codes={self.p}')
+                f'leftTicketDTO.train_date={self.date}'
+                f'&leftTicketDTO.from_station={self.from_}'
+                f'&leftTicketDTO.to_station={self.to}&purpose_codes={self.purpose_code}')
             r = self.s.get(url)
             tickets = []
             for line in r.json()['data']['result']:
                 ls = line.split('|')
                 if ls[0]:
                     tickets.append({
-                        'train_num': ls[3], 'date': ls[13], 'start_at': ls[8], 'arrive_at': ls[9],
+                        'secretstr': ls[0], 'train_num': ls[3],
+                        'train_date': ls[13], 'start_at': ls[8], 'arrive_at': ls[9],
                         'seat_level_0': ls[32], 'seat_level_1': ls[31], 'seat_level_2': ls[30],
                         'sleeper_level_0': ls[21], 'sleeper_level_1': ls[23],
                         'motor_sleeper': ls[33], 'sleeper_level_2': ls[28],
@@ -51,9 +61,72 @@ class Grabber:
         if not tickets:
             return
         for ticket in tickets:
-            if ticket['train_num'] == 'G1010':
-                print(ticket)
-                # TODO: get the aim train_num for ordering.
+            if ticket['train_num'] == 'G1002':
+                self.order_ticket(ticket)
+                return
+
+    def submit_order_request(self, ticket):
+        url = 'https://kyfw.12306.cn/otn/leftTicket/submitOrderRequest'
+        data = {
+            'secretStr': urllib.parse.unquote(ticket['secretstr']),
+            'train_date': ticket['train_date'],
+            'back_train_date': '2018-12-31',
+            'tour_flag': 'dc',
+            'purpose_codes': self.purpose_code,
+            'query_from_station_name': sd[self.from_],
+            'query_to_station_name': sd[self.to],
+            'undefined': ''
+        }
+        r = self.s.post(url, data=data)
+        print(r.status_code)
+        print('submited.')
+
+    def get_data(self):
+
+        def parse_pts(html):
+            tds = html.xpath('//tbody[@id="check_ticketInfo_id"]/tr/td')
+            return f'0,0,1,{tds[3].text},1,{tds[5].text},{tds[6].text},N', f'{tds[3].text},1,{tds[5].text},1_'
+
+        url = 'https://kyfw.12306.cn/otn/confirmPassenger/initDc'
+        headers = {
+            'Referer': 'https://kyfw.12306.cn/otn/leftTicket/init?linktypeid=dc',
+            'Host': 'kyfw.12306.cn',
+        }
+        rt = self.s.post(url, data={'_json_att': ''}, headers=headers).text
+        # TODO: here is error.
+        html = lxml.etree.HTML(rt)
+        passenger_ticket_str, old_passenger_str = parse_pts(html)
+
+        return {
+            'REPEAT_SUBMIT_TOKEN': re.findall(r'var globalRepeatSubmitToken = \'(.*)\';', rt)[0],
+            'key_check_isChange': re.findall(r'\'key_check_isChange\':\'(.*)\',', rt)[0],
+            'leftTicketStr': re.findall(r'\'leftTicketStr\':\'(.*)\',', rt)[0],
+            '_json_att': '',
+            'dwAll': 'N',
+            'roomType': '00',
+            'whatsSelect': '1',
+            'seatDetailType': '000',
+            'choose_seats': '',# TODO: choose seat.
+            'train_location': 'QX', # cant understand.
+            'purpose_codes': '00',
+            'randCode': '',
+            'passengerTicketStr': passenger_ticket_str,
+            'oldPassengerStr': old_passenger_str,
+        }
+
+    def order_ticket(self, ticket):
+        self.submit_order_request(ticket)
+        time.sleep(2)
+        data = self.get_data()
+        url = 'https://kyfw.12306.cn/otn/confirmPassenger/confirmSingleForQueue'
+        r = self.s.post(url, data=data)
+        try:
+            print(r.status_code)
+            print(r.text)
+            print(r.json())
+        except:
+            import traceback
+            traceback.print_exc()
 
     def show_qr_code(self):
         """Show qrcode for login."""
@@ -66,18 +139,18 @@ class Grabber:
         img.show()
 
     def check_qr_code(self):
-        print(self.s.post('https://kyfw.12306.cn/passport/web/checkqr', data={'appid': 'otn', 'uuid': self.uuid}).json())
-
+        rjs = self.s.post('https://kyfw.12306.cn/passport/web/checkqr',
+                        data={'appid': 'otn', 'uuid': self.uuid}).json()
+        return rjs['result_code'] != '2'
 
     def login(self):
         threading.Thread(target=self.show_qr_code).start()
-        while True:
-            self.check_qr_code()
+        while self.check_qr_code():
             time.sleep(2)
-            # TODO: check the output.
+        print('login success.')
 
 
 if __name__ == "__main__":
-    g = Grabber('2019-01-25', 'SZQ', 'WHN', 'ADULT')
-    # g.check_tickect_info()
+    g = Grabber('2019-01-15', 'SZQ', 'WHN', 'ADULT')
     g.login()
+    g.check_tickect_info()

@@ -1,5 +1,5 @@
-import requests
 from requests.cookies import RequestsCookieJar
+from requests_html import HTMLSession
 from PIL import Image
 from io import BytesIO
 import base64
@@ -8,6 +8,7 @@ import time
 import urllib.parse
 import re
 import lxml.etree
+import datetime as dt
 
 
 sd = {
@@ -23,17 +24,16 @@ class Grabber:
         self.from_ = f
         self.to = t
         self.purpose_code = p
-
-        self.s = requests.Session()
+        self.s = HTMLSession()
         self.s.cookies = self.init_cookie()
         self.uuid = ''
         self.ticket = {}
 
     def init_cookie(self):
         cookie_jar = RequestsCookieJar()
-        cookie_jar.set("route", "495c805987d0f5c8c84b14f60212447d", domain="/")
-        cookie_jar.set("JSESSIONID", "A01D810FE9FF47ED376A51996A47A9AE", domain="/otn")
-        cookie_jar.set("BIGipServerotn", "468713994.24610.0000", domain="/")
+        cookie_jar.set("route", "c5c62a339e7744272a54643b3be5bf64", domain="/")
+        cookie_jar.set("JSESSIONID", "772931B953A48C762D39F27832447D2F", domain="/otn")
+        cookie_jar.set("BIGipServerotn", "217055754.38945.0000", domain="/")
         return cookie_jar
 
     def check_tickect_info(self):
@@ -69,8 +69,8 @@ class Grabber:
         url = 'https://kyfw.12306.cn/otn/leftTicket/submitOrderRequest'
         data = {
             'secretStr': urllib.parse.unquote(ticket['secretstr']),
-            'train_date': ticket['train_date'],
-            'back_train_date': '2018-12-31',
+            'train_date': dt.datetime.strptime(ticket['train_date'], '%Y%m%d').strftime('%Y-%m-%d'),
+            'back_train_date': dt.datetime.today().strftime('%Y-%m-%d'),
             'tour_flag': 'dc',
             'purpose_codes': self.purpose_code,
             'query_from_station_name': sd[self.from_],
@@ -78,8 +78,6 @@ class Grabber:
             'undefined': ''
         }
         r = self.s.post(url, data=data)
-        print(r.status_code)
-        print('submited.')
 
     def get_data(self):
 
@@ -91,10 +89,16 @@ class Grabber:
         headers = {
             'Referer': 'https://kyfw.12306.cn/otn/leftTicket/init?linktypeid=dc',
             'Host': 'kyfw.12306.cn',
+            'Origin': 'https://kyfw.12306.cn',
+            'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36',
+            'Upgrade-Insecure-Requests': '1',
+            'Content-Type': 'application/x-www-form-urlencoded'
         }
-        rt = self.s.post(url, data={'_json_att': ''}, headers=headers).text
-        # TODO: here is error.
-        html = lxml.etree.HTML(rt)
+        r = self.s.post(url, data={'_json_att': ''}, headers=headers)
+        r.html.render(reload=False, wait=5)
+        # print(r.text)
+        # TODO: optimized
+        html = lxml.etree.HTML(r.text)
         passenger_ticket_str, old_passenger_str = parse_pts(html)
 
         return {
@@ -116,14 +120,12 @@ class Grabber:
 
     def order_ticket(self, ticket):
         self.submit_order_request(ticket)
-        time.sleep(2)
         data = self.get_data()
         url = 'https://kyfw.12306.cn/otn/confirmPassenger/confirmSingleForQueue'
         r = self.s.post(url, data=data)
         try:
-            print(r.status_code)
-            print(r.text)
-            print(r.json())
+            if r.status_code == 200:
+                print('got !')
         except:
             import traceback
             traceback.print_exc()

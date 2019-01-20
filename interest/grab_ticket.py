@@ -95,9 +95,10 @@ class Grabber:
             'Content-Type': 'application/x-www-form-urlencoded'
         }
         r = self.s.post(url, data={'_json_att': ''}, headers=headers)
-        r.html.render(reload=False, wait=5)
+        r.html.render(timeout=6, wait=6)
         # print(r.text)
         # TODO: optimized
+        print(r.text)
         html = lxml.etree.HTML(r.text)
         passenger_ticket_str, old_passenger_str = parse_pts(html)
 
@@ -120,6 +121,7 @@ class Grabber:
 
     def order_ticket(self, ticket):
         self.submit_order_request(ticket)
+        # checkuser
         data = self.get_data()
         url = 'https://kyfw.12306.cn/otn/confirmPassenger/confirmSingleForQueue'
         r = self.s.post(url, data=data)
@@ -154,5 +156,5 @@ class Grabber:
 
 if __name__ == "__main__":
     g = Grabber('2019-01-15', 'SZQ', 'WHN', 'ADULT')
-    g.login()
+    # g.login()
     g.check_tickect_info()

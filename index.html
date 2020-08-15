@@ -50,6 +50,8 @@
   
       `ps -ef |grep "feedback.py" |grep -v grep |awk '{print $2}'|xargs kill -9 > /dev/null 2>&1`
 
+    - * **update/fix driver** *
+      `sudo ubuntu-drivers autoinstall`
   
   ---
   ### python
@@ -75,6 +77,7 @@
     - [Unicode Characters](http://graphemica.com/unicode/characters)
     - [About redis-cli](http://blog.fens.me/linux-redis-install/)
     - chrome install third party plug-ins `google-chrome --enable-easy-off-store-extension-install`
+    - [chromedriver](http://chromedriver.storage.googleapis.com/index.html)
 
   ### [APIcode](https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html)
       200 OK                    [GET]             服务器成功返回用户请求的数据
@@ -87,7 +90,9 @@
       404 NOT FOUND             [*]               服务器地址不存在
       406 Not Acceptable        [GET]             用户请求的格式不可得
       410 Gone                  [GET]             服务器资源不存在
+      412 Precondition failed   [POST/GET]        未满足'先决条件', 一般是cookie
       422 Unprocesable entity   [POST/PUT/PATCH]  创建对象验证错误
+      429 Too Many Requests     [*]               太多请求
       500 INTERNAL SERVER ERROR [*]               服务器内部错误
       
   # F

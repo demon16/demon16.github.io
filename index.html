@@ -129,3 +129,19 @@
     var mdHTML = mdP.toHTML(md).replace(/^&gt;$/, '>');
     mdO.html(mdHTML);
 </script>
+
+openapi-generator
+```bash
+#!/usr/bin/bash
+
+sudo docker run --rm \
+  -v ${PWD}:/local openapitools/openapi-generator-cli generate \
+  -i /local/api/trading.yaml \
+  -g python-fastapi \
+  -o /local/ \
+  -p packageName=trading_ops \
+  -p sourceFolder=/
+
+sudo chmod -R a+rw .
+
+```

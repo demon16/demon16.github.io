@@ -1,2 +1,43 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0"><channel><title>Blog Title</title><link>https://Meekdai.github.io/Gmeek-template</link><description>Blog description</description><copyright>Blog Title</copyright><docs>http://www.rssboard.org/rss-specification</docs><generator>python-feedgen</generator><image><url>https://github.githubassets.com/favicons/favicon.svg</url><title>avatar</title><link>https://Meekdai.github.io/Gmeek-template</link></image><lastBuildDate>Thu, 14 Mar 2024 09:17:29 +0000</lastBuildDate><managingEditor>Blog Title</managingEditor><ttl>60</ttl><webMaster>Blog Title</webMaster><item><title>请接着之后的安装步骤执行</title><link>https://Meekdai.github.io/Gmeek-template/post/qing-jie-zhao-zhi-hou-de-an-zhuang-bu-zou-zhi-xing.html</link><description>如果你点击了`READM.md`的链接后，看到了这个页面，请继续之后的安装步骤执行。</description><guid isPermaLink="true">https://Meekdai.github.io/Gmeek-template/post/qing-jie-zhao-zhi-hou-de-an-zhuang-bu-zou-zhi-xing.html</guid><pubDate>Thu, 14 Mar 2024 09:15:10 +0000</pubDate></item><item><title>这是Gmeek模板仓库</title><link>https://Meekdai.github.io/Gmeek-template/post/zhe-shi-Gmeek-mo-ban-cang-ku.html</link><description>通过这个模板创建库，可以大大减少部署Gmeek博客的配置步骤。</description><guid isPermaLink="true">https://Meekdai.github.io/Gmeek-template/post/zhe-shi-Gmeek-mo-ban-cang-ku.html</guid><pubDate>Wed, 20 Dec 2023 07:42:24 +0000</pubDate></item></channel></rss>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0"><channel><title>Blog Title</title><link>https://demon16.github.io</link><description>Blog description</description><copyright>Blog Title</copyright><docs>http://www.rssboard.org/rss-specification</docs><generator>python-feedgen</generator><image><url>https://github.githubassets.com/favicons/favicon.svg</url><title>avatar</title><link>https://demon16.github.io</link></image><lastBuildDate>Wed, 24 Apr 2024 06:20:09 +0000</lastBuildDate><managingEditor>Blog Title</managingEditor><ttl>60</ttl><webMaster>Blog Title</webMaster><item><title>bakup</title><link>https://demon16.github.io/post/bakup.html</link><description>&#13;
+  ---&#13;
+  ### python&#13;
+    - [PyYAML Documentation](http://pyyaml.org/wiki/PyYAMLDocumentation)&#13;
+    - [Flask](http://flask.pocoo.org/docs/0.12/api/)&#13;
+    - [Flask-RESTful](http://flask-restful.readthedocs.io/en/0.3.6/api.html)&#13;
+    - [Flask-SQLAlchemy](http://flask-sqlalchemy.pocoo.org/2.3/api/)&#13;
+    - [MarshMallow](http://marshmallow.readthedocs.io/en/latest/quickstart.html)&#13;
+    - [Scapy](http://secdev.org/projects/scapy/demo.html)&#13;
+    - [Pandas](http://pandas.pydata.org/pandas-docs/version/0.20/io.html)&#13;
+    - [Numpy](https://docs.scipy.org/doc/numpy/user/quickstart.html)&#13;
+    - [Tensorflow Install](https://blog.csdn.net/u014797226/article/details/80229887)&#13;
+    - [Tensorflow Install2](https://www.cnblogs.com/Ph-one/p/9000211.html)&#13;
+&#13;
+  ---&#13;
+  ### database&#13;
+    - [Redis](https://www.fullstackpython.com/blog/install-redis-use-python-3-ubuntu-1604.html)&#13;
+    - [Peewee](http://docs.peewee-orm.com/en/latest/peewee/example.html)&#13;
+    - [alembic](http://alembic.zzzcomputing.com/en/latest/tutorial.html#the-migration-environment)&#13;
+  ---&#13;
+&#13;
+  ### other&#13;
+    - [Unicode Characters](http://graphemica.com/unicode/characters)&#13;
+    - [About redis-cli](http://blog.fens.me/linux-redis-install/)&#13;
+    - chrome install third party plug-ins `google-chrome --enable-easy-off-store-extension-install`&#13;
+    - [chromedriver](http://chromedriver.storage.googleapis.com/index.html)&#13;
+&#13;
+  ### [APIcode](https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html)&#13;
+      200 OK                    [GET]             服务器成功返回用户请求的数据&#13;
+      201 CREATED               [POST/PUT/PATCH]  用户新建或修改数据成功&#13;
+      202 Accepted              [*]               表示一个请求已经进入后台排队&#13;
+      204 NO CONTENT            [DELETE]          用户删除数据成功&#13;
+      400 INVALID REQUEST       [POST/PUT/PATCH]  用户发出的请求错误&#13;
+      401 Unauthorized          [*]               用户无权限&#13;
+      403 Forbidden             [*]               禁止访问（有权限）&#13;
+      404 NOT FOUND             [*]               服务器地址不存在&#13;
+      406 Not Acceptable        [GET]             用户请求的格式不可得&#13;
+      410 Gone                  [GET]             服务器资源不存在&#13;
+      412 Precondition failed   [POST/GET]        未满足'先决条件', 一般是cookie&#13;
+      422 Unprocesable entity   [POST/PUT/PATCH]  创建对象验证错误&#13;
+      429 Too Many Requests     [*]               太多请求&#13;
+      500 INTERNAL SERVER ERROR [*]               服务器内部错误。</description><guid isPermaLink="true">https://demon16.github.io/post/bakup.html</guid><pubDate>Wed, 24 Apr 2024 06:19:42 +0000</pubDate></item></channel></rss>
